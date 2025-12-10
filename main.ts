@@ -65,6 +65,24 @@ export default class MyPlugin extends Plugin {
 			}
 		});
 
+		// Command to toggle fold on the active line
+		this.addCommand({
+			id: 'toggle-line-fold',
+			name: 'Toggle Line Fold',
+			editorCallback: (editor: Editor, view: MarkdownView) => {
+				const line = editor.getCursor().line;
+				const foldInfo = (view as any).foldInfo;
+				if (foldInfo) {
+					const isFolded = foldInfo.isFolded(line);
+					if (isFolded) {
+						foldInfo.unfold(line);
+					} else {
+						foldInfo.fold(line);
+					}
+				}
+			}
+		});
+
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
